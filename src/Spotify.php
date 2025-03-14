@@ -1,5 +1,5 @@
 <?php
 
-namespace Gerenuk\Spotify;
+namespace Gerenuk\SpotifyForLaravel;
 
 class Spotify {}

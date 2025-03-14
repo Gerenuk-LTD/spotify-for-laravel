@@ -4,9 +4,10 @@
     "keywords": [
         "Gerenuk",
         "laravel",
+        "spotify",
         "spotify-for-laravel"
     ],
-    "homepage": "https://github.com/gerenuk/spotify-for-laravel",
+    "homepage": "https://github.com/gerenuk-ltd/spotify-for-laravel",
     "license": "MIT",
     "authors": [
         {
@@ -35,13 +36,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Gerenuk\\Spotify\\": "src/",
-            "Gerenuk\\Spotify\\Database\\Factories\\": "database/factories/"
+            "Gerenuk\\SpotifyForLaravel\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Gerenuk\\Spotify\\Tests\\": "tests/",
+            "Gerenuk\\SpotifyForLaravel\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -63,10 +63,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Gerenuk\\Spotify\\SpotifyServiceProvider"
+                "Gerenuk\\SpotifyForLaravel\\SpotifyServiceProvider"
             ],
             "aliases": {
-                "Spotify": "Gerenuk\\Spotify\\Facades\\Spotify"
+                "Spotify": "Gerenuk\\SpotifyForLaravel\\Facades\\Spotify"
             }
         }
     },

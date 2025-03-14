@@ -11,6 +11,6 @@ class Spotify extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \Gerenuk\Spotify\Spotify::class;
+        return \Gerenuk\SpotifyForLaravel\Spotify::class;
     }
 }
