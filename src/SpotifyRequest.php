@@ -3,12 +3,12 @@
 namespace Gerenuk\SpotifyForLaravel;
 
 use Gerenuk\SpotifyForLaravel\Exceptions\SpotifyApiException;
+use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 use Gerenuk\SpotifyForLaravel\Helpers\Validator;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 
 class SpotifyRequest
 {
