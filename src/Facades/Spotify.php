@@ -1,6 +1,6 @@
 <?php
 
-namespace Gerenuk\Spotify\Facades;
+namespace Gerenuk\SpotifyForLaravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
