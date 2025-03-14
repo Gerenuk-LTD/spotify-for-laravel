@@ -2,6 +2,8 @@
 
 namespace Gerenuk\SpotifyForLaravel\Facades;
 
+use Illuminate\Support\Facades\Facade;
+
 /**
  * @see \Gerenuk\SpotifyForLaravel\SpotifyClient
  */
