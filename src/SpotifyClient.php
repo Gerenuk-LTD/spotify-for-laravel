@@ -2,4 +2,6 @@
 
 namespace Gerenuk\SpotifyForLaravel;
 
-class SpotifyClient {}
+use GuzzleHttp\Client;
+
+class SpotifyClient extends Client {}
