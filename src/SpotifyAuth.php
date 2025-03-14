@@ -2,7 +2,4 @@
 
 namespace Gerenuk\SpotifyForLaravel;
 
-class SpotifyAuth
-{
-
-}
+class SpotifyAuth {}
