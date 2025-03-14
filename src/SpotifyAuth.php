@@ -3,10 +3,10 @@
 namespace Gerenuk\SpotifyForLaravel;
 
 use Gerenuk\SpotifyForLaravel\Exceptions\SpotifyAuthException;
+use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
-use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 
 class SpotifyAuth
 {
@@ -26,8 +26,6 @@ class SpotifyAuth
      * Initiate the 'Authorization Code Flow' prompting the user to log in to Spotify and give required permissions for your application.
      *
      * @link https://developer.spotify.com/documentation/web-api/tutorials/code-flow
-     *
-     * @return RedirectResponse
      */
     public function authorize(): RedirectResponse
     {
@@ -41,7 +39,8 @@ class SpotifyAuth
             'show_dialog' => config('spotify-for-laravel.auth.show_dialog', false),
         ];
 
-        $redirectUrl = self::ACCOUNT_URL . '/authorize?' . http_build_query($parameters);
+        $redirectUrl = self::ACCOUNT_URL.'/authorize?'.http_build_query($parameters);
+
         return redirect()->away($redirectUrl);
     }
 
@@ -50,8 +49,6 @@ class SpotifyAuth
      *
      * @link https://developer.spotify.com/documentation/web-api/tutorials/code-flow
      *
-     * @param  string  $authorizationCode
-     * @return array
      * @throws SpotifyAuthException
      */
     public function requestAccessToken(string $authorizationCode): array
@@ -91,7 +88,6 @@ class SpotifyAuth
     /**
      * Get an access token using the 'Client Credentials Flow'.
      *
-     * @return void
      * @throws SpotifyAuthException
      */
     private function requestCredentialsToken(): void
@@ -126,8 +122,6 @@ class SpotifyAuth
 
     /**
      * Retrieve the currently stored access token from the cache.
-     *
-     * @return string
      */
     public function getAccessToken(): string
     {
@@ -140,31 +134,22 @@ class SpotifyAuth
 
     /**
      * Set an access token to be stored in the cache.
-     *
-     * @param  string  $accessToken
-     * @param  int|null  $ttl
-     * @return void
      */
-    public function setAccessToken(string $accessToken, int $ttl = null): void
+    public function setAccessToken(string $accessToken, ?int $ttl = null): void
     {
         Cache::put('spotify_access_token', $accessToken, $ttl);
     }
 
     /**
      * Get the currently stored refresh token from the cache.
-     *
-     * @return string|null
      */
-    public function getRefreshToken(): string|null
+    public function getRefreshToken(): ?string
     {
         return Cache::get('spotify_refresh_token');
     }
 
     /**
      * Set a refresh token to be stored in the cache.
-     *
-     * @param  string  $refreshToken
-     * @return void
      */
     public function setRefreshToken(string $refreshToken): void
     {
