@@ -1,11 +1,11 @@
 <?php
 
-namespace Gerenuk\Spotify;
+namespace Gerenuk\SpotifyForLaravel;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class SpotifyServiceProvider extends PackageServiceProvider
+class SpotifyForLaravelServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
