@@ -5,7 +5,7 @@ namespace Gerenuk\Spotify\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Gerenuk\Spotify\Spotify
+ * @see \Gerenuk\SpotifyForLaravel\Spotify
  */
 class Spotify extends Facade
 {

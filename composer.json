@@ -63,10 +63,12 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Gerenuk\\SpotifyForLaravel\\SpotifyServiceProvider"
+                "Gerenuk\\SpotifyForLaravel\\SpotifyForLaravelServiceProvider"
             ],
             "aliases": {
-                "Spotify": "Gerenuk\\SpotifyForLaravel\\Facades\\Spotify"
+                "Spotify": "Gerenuk\\SpotifyForLaravel\\Facades\\Spotify",
+                "SpotifyAuth": "Gerenuk\\SpotifyForLaravel\\Facades\\SpotifyAuth",
+                "SpotifyClient": "Gerenuk\\SpotifyForLaravel\\Facades\\SpotifyClient"
             }
         }
     },
