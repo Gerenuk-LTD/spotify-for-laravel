@@ -2,9 +2,9 @@
 
 namespace Gerenuk\Spotify;
 
+use Gerenuk\Spotify\Commands\SpotifyCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Gerenuk\Spotify\Commands\SpotifyCommand;
 
 class SpotifyServiceProvider extends PackageServiceProvider
 {

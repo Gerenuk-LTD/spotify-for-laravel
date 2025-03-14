@@ -2,9 +2,9 @@
 
 namespace Gerenuk\Spotify\Tests;
 
+use Gerenuk\Spotify\SpotifyServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Gerenuk\Spotify\SpotifyServiceProvider;
 
 class TestCase extends Orchestra
 {
