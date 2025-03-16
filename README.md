@@ -3,11 +3,32 @@
 # Spotify for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/gerenuk/spotify-for-laravel.svg?style=flat-square)](https://packagist.org/packages/gerenuk/spotify-for-laravel)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/gerenuk/spotify-for-laravel/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/gerenuk/spotify-for-laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/gerenuk/spotify-for-laravel/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/gerenuk/spotify-for-laravel/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/gerenuk-ltd/spotify-for-laravel/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/gerenuk-ltd/spotify-for-laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/gerenuk-ltd/spotify-for-laravel/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/gerenuk-ltd/spotify-for-laravel/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/gerenuk/spotify-for-laravel.svg?style=flat-square)](https://packagist.org/packages/gerenuk/spotify-for-laravel)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Spotify for Laravel is an easy-to-use [Spotify Web API](https://developer.spotify.com/documentation/web-api) wrapper for Laravel, providing methods for each endpoint and a fluent interface for optional parameters. It is based on [aerni/laravel-spotify](https://github.com/aerni/laravel-spotify) adding support for the ['Authorization Code Flow'](https://developer.spotify.com/documentation/web-api/tutorials/code-flow).
+
+> [!NOTE]
+> This package is still under development and may not support all endpoints.
+
+## Table of Contents
+1. [Introduction](#spotify-for-laravel)
+2. [Version Compatability](#version-compatability)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Testing](#testing)
+6. [Changelog](#changelog)
+7. [Contributing](#contributing)
+8. [Security Vulnerabilities](#security-vulnerabilities)
+9. [Credits](#credits)
+10. [License](#license)
+
+## Version Compatability
+
+| Plugin | PHP |
+|--------|-----|
+| 1.x    | 8.x |
 
 ## Installation
 
@@ -75,6 +96,16 @@ return [
 
 ```
 
+Set the `Client ID` and `Client Secret` of your [Spotify App](https://developer.spotify.com/dashboard) in your `.env` file.
+
+```env
+SPOTIFY_CLIENT_ID=********************************
+SPOTIFY_CLIENT_SECRET=********************************
+```
+
+> [!NOTE]
+> You will need to set the 'scope' and 'redirect_uri' if using endpoints that access user data.
+
 ## Usage
 
 ```php
@@ -102,6 +133,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
+- Modified version of [laravel-spotify](https://github.com/aerni/laravel-spotify) from [aerni](https://github.com/aerni)
 - [Kieran Proctor](https://github.com/KieranLProctor)
 - [All Contributors](../../contributors)
 
