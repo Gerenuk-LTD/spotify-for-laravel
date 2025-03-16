@@ -3,6 +3,7 @@
 namespace Gerenuk\SpotifyForLaravel;
 
 use Gerenuk\SpotifyForLaravel\Exceptions\SpotifyApiException;
+use Gerenuk\SpotifyForLaravel\Exceptions\ValidatorException;
 use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 use Gerenuk\SpotifyForLaravel\Helpers\Validator;
 use GuzzleHttp\Exception\GuzzleException;
@@ -152,6 +153,76 @@ class SpotifyRequest
     public function timestamp(string $timestamp): self
     {
         $this->setRequestedParam('timestamp', $timestamp);
+
+        return $this;
+    }
+
+    /**
+     * Set the time range if provided.
+     *
+     * @return $this
+     *
+     * @throws Exceptions\ValidatorException
+     */
+    public function timeRange(string $timeRange): self
+    {
+        $this->setRequestedParam('time_range', $timeRange);
+
+        return $this;
+    }
+
+    /**
+     * Set the additional types if provided.
+     *
+     * @return $this
+     *
+     * @throws Exceptions\ValidatorException
+     */
+    public function additionalTypes(array|string $types): self
+    {
+        $this->setRequestedParam('additional_types', $types);
+
+        return $this;
+    }
+
+    /**
+     * Set the before unix timestamp if provided.
+     *
+     * @return $this
+     *
+     * @throws ValidatorException
+     */
+    public function before(string $timestamp): self
+    {
+        $this->setRequestedParam('before', $timestamp);
+
+        return $this;
+    }
+
+    /**
+     * Set the after unix timestamp if provided.
+     *
+     * @return $this
+     *
+     * @throws ValidatorException
+     */
+    public function after(string $timestamp): self
+    {
+        $this->setRequestedParam('after', $timestamp);
+
+        return $this;
+    }
+
+    /**
+     * Set the position if provided.
+     *
+     * @return $this
+     *
+     * @throws ValidatorException
+     */
+    public function position(int $position): self
+    {
+        $this->setRequestedParam('position', $position);
 
         return $this;
     }
