@@ -91,9 +91,7 @@ class SpotifyAuth
 
         $body = json_decode((string) $response->getBody());
 
-        Cache::remember('spotify_access_token', $body->expires_in, function () use ($body) {
-            return $body->access_token;
-        });
+        Cache::put('spotify_access_token', $body->access_token, $body->expires_in);
     }
 
     /**
@@ -174,9 +172,7 @@ class SpotifyAuth
 
         $body = json_decode((string) $response->getBody());
 
-        Cache::remember('spotify_access_token', $body->expires_in, function () use ($body) {
-            return $body->access_token;
-        });
+        Cache::put('spotify_access_token', $body->access_token, $body->expires_in);
         Cache::put('spotify_refresh_token', $body->refresh_token);
 
         return ['access_token' => $body->access_token, 'expires_in' => $body->expires_in];
