@@ -391,7 +391,7 @@ class Spotify
 
         $acceptedParams = [
             'market' => $this->defaultConfig['market'],
-            'additional_types' => null
+            'additional_types' => null,
         ];
 
         return new SpotifyRequest($endpoint, $acceptedParams);
@@ -420,7 +420,7 @@ class Spotify
 
         $acceptedParams = [
             'market' => $this->defaultConfig['market'],
-            'additional_types' => null
+            'additional_types' => null,
         ];
 
         return new SpotifyRequest($endpoint, $acceptedParams);
@@ -433,7 +433,7 @@ class Spotify
         $acceptedParams = [
             'limit' => null,
             'after' => null,
-            'before' => null
+            'before' => null,
         ];
 
         return new SpotifyRequest($endpoint, $acceptedParams);
