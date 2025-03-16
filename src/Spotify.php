@@ -280,7 +280,7 @@ class Spotify
      */
     public function chapter(string $id): SpotifyRequest
     {
-        $endpoint = '/chapters'.$id;
+        $endpoint = '/chapters/'.$id;
 
         $acceptedParams = [
             'market' => $this->defaultConfig['market'],
@@ -622,7 +622,7 @@ class Spotify
      */
     public function currentUsersTopItems(string $type): SpotifyRequest
     {
-        $endpoint = '/me/top'.$type;
+        $endpoint = '/me/top/'.$type;
 
         $acceptedParams = [
             'time_range' => 'medium_term',
