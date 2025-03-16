@@ -1,5 +1,5 @@
 <?php
 
-use Gerenuk\Spotify\Tests\TestCase;
+use Gerenuk\SpotifyForLaravel\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

@@ -50,7 +50,8 @@ class Spotify
     }
 
     /**
-     * Get Spotify catalog information about an album’s tracks. Optional parameters can be used to limit the number of tracks returned.
+     * Get Spotify catalog information about an album’s tracks.
+     * Optional parameters can be used to limit the number of tracks returned.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/get-an-albums-tracks
      */
@@ -133,7 +134,8 @@ class Spotify
     }
 
     /**
-     * Get Spotify catalog information about an artist’s albums. Optional parameters can be specified in the query string to filter and sort the response.
+     * Get Spotify catalog information about an artist’s albums.
+     * Optional parameters can be specified in the query string to filter and sort the response.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/get-an-artists-albums
      */
@@ -168,7 +170,8 @@ class Spotify
     }
 
     /**
-     * Get Spotify catalog information for a single audiobook. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
+     * Get Spotify catalog information for a single audiobook.
+     * Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/get-an-audiobook
      */
@@ -184,7 +187,8 @@ class Spotify
     }
 
     /**
-     * Get Spotify catalog information for several audiobooks identified by their Spotify IDs. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
+     * Get Spotify catalog information for several audiobooks identified by their Spotify IDs.
+     * Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/get-multiple-audiobooks
      *
@@ -203,7 +207,8 @@ class Spotify
     }
 
     /**
-     * Get Spotify catalog information about an audiobook's chapters. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
+     * Get Spotify catalog information about an audiobook's chapters.
+     * Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/get-audiobook-chapters
      */
@@ -274,7 +279,8 @@ class Spotify
     }
 
     /**
-     * Get Spotify catalog information for a single audiobook chapter. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
+     * Get Spotify catalog information for a single audiobook chapter.
+     * Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/get-a-chapter
      */
@@ -290,7 +296,8 @@ class Spotify
     }
 
     /**
-     * Get Spotify catalog information for several audiobook chapters identified by their Spotify IDs. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
+     * Get Spotify catalog information for several audiobook chapters identified by their Spotify IDs.
+     * Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/get-several-chapters
      *
@@ -534,7 +541,8 @@ class Spotify
     }
 
     /**
-     * Get a list of shows saved in the current Spotify user's library. Optional parameters can be used to limit the number of shows returned.
+     * Get a list of shows saved in the current Spotify user's library.
+     * Optional parameters can be used to limit the number of shows returned.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/get-users-saved-shows
      */

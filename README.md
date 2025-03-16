@@ -1,3 +1,5 @@
+<img src="https://banners.beyondco.de/Spotify%20for%20Laravel.png?theme=light&packageManager=composer+require&packageName=gerenuk%2Fspotify-for-laravel&pattern=brickWall&style=style_1&description=A+Laravel+wrapper+for+the+Spotify+Web+API&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg" alt="Project banner">
+
 # Spotify for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/gerenuk/spotify-for-laravel.svg?style=flat-square)](https://packagist.org/packages/gerenuk/spotify-for-laravel)
@@ -25,7 +27,52 @@ This is the contents of the published config file:
 
 ```php
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | API Base URL
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the base URL of the Spotify API.
+    |
+    */
+
+    'api_url' => 'https://api.spotify.com/v1',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the required settings depending on which auth flow
+    | you are using.
+    |
+    */
+
+    'auth' => [
+        'client_id' => env('SPOTIFY_CLIENT_ID'),
+        'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
+        'redirect_uri' => '',
+        'scope' => [],
+        'show_dialog' => false,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Config
+    |--------------------------------------------------------------------------
+    |
+    | You may define a default country, locale and market that will be used
+    | for your Spotify API requests.
+    |
+    */
+
+    'default_config' => [
+        'country' => null,
+        'locale' => null,
+        'market' => null,
+    ],
 ];
+
 ```
 
 ## Usage

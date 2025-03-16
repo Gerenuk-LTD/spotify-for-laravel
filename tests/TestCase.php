@@ -1,9 +1,8 @@
 <?php
 
-namespace Gerenuk\Spotify\Tests;
+namespace Gerenuk\SpotifyForLaravel\Tests;
 
-use Gerenuk\Spotify\SpotifyServiceProvider;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Gerenuk\SpotifyForLaravel\SpotifyForLaravelServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -11,27 +10,14 @@ class TestCase extends Orchestra
     protected function setUp(): void
     {
         parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Gerenuk\\Spotify\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
-            SpotifyServiceProvider::class,
+            SpotifyForLaravelServiceProvider::class,
         ];
     }
 
-    public function getEnvironmentSetUp($app)
-    {
-        config()->set('database.default', 'testing');
-
-        /*
-         foreach (\Illuminate\Support\Facades\File::allFiles(__DIR__ . '/database/migrations') as $migration) {
-            (include $migration->getRealPath())->up();
-         }
-         */
-    }
+    public function getEnvironmentSetUp($app): void {}
 }

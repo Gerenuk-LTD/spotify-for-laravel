@@ -115,6 +115,8 @@ class SpotifyAuth
 
     /**
      * Retrieve the currently stored access token from the cache.
+     *
+     * @throws SpotifyAuthException
      */
     public function getAccessToken(): string
     {
