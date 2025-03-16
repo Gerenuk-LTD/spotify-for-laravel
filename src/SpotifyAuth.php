@@ -5,7 +5,6 @@ namespace Gerenuk\SpotifyForLaravel;
 use Gerenuk\SpotifyForLaravel\Exceptions\SpotifyAuthException;
 use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
 
 class SpotifyAuth
@@ -27,7 +26,7 @@ class SpotifyAuth
      *
      * @link https://developer.spotify.com/documentation/web-api/tutorials/code-flow
      */
-    public function authorize(): RedirectResponse
+    public function authorize(): void
     {
         $scope = config('spotify-for-laravel.auth.scope');
 
@@ -40,8 +39,8 @@ class SpotifyAuth
         ];
 
         $redirectUrl = self::ACCOUNT_URL.'/authorize?'.http_build_query($parameters);
-
-        return redirect()->away($redirectUrl);
+        header('Location: '.$redirectUrl);
+        exit();
     }
 
     /**
@@ -59,34 +58,13 @@ class SpotifyAuth
             'redirect_uri' => config('spotify-for-laravel.auth.redirect_uri'),
         ];
 
-        try {
-            $response = SpotifyClient::post(self::ACCOUNT_URL.'/api/token', [
-                'form_params' => $parameters,
-                'headers' => [
-                    'content-type' => 'application/x-www-form-urlencoded',
-                    'Authorization' => 'Basic '.base64_encode($this->clientId.':'.$this->clientSecret),
-                ],
-            ]);
-        } catch (RequestException $e) {
-            $errorResponse = json_decode($e->getResponse()->getBody()->getContents());
-            $status = $e->getCode();
-            $message = $errorResponse->error;
-
-            throw new SpotifyAuthException($message, $status, $errorResponse);
-        }
-
-        $body = json_decode((string) $response->getBody());
-
-        Cache::remember('spotify_access_token', $body->expires_in, function () use ($body) {
-            return $body->access_token;
-        });
-        Cache::put('spotify_refresh_token', $body->refresh_token);
-
-        return ['access_token' => $body->access_token, 'expires_in' => $body->expires_in];
+        return $this->handleAuthRequest($parameters);
     }
 
     /**
      * Get an access token using the 'Client Credentials Flow'.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow
      *
      * @throws SpotifyAuthException
      */
@@ -118,10 +96,27 @@ class SpotifyAuth
         });
     }
 
-    public function refreshAccessToken(?string $refreshToken = null) {}
+    /**
+     * Obtain a new Access Token by using a Refresh Token.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens
+     *
+     * @throws SpotifyAuthException
+     */
+    public function refreshAccessToken(?string $refreshToken = null): array
+    {
+        $parameters = [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refreshToken ?? Cache::get('spotify_refresh_token'),
+        ];
+
+        return $this->handleAuthRequest($parameters);
+    }
 
     /**
      * Retrieve the currently stored access token from the cache.
+     *
+     * @throws SpotifyAuthException
      */
     public function getAccessToken(): string
     {
@@ -154,5 +149,36 @@ class SpotifyAuth
     public function setRefreshToken(string $refreshToken): void
     {
         Cache::put('spotify_refresh_token', $refreshToken);
+    }
+
+    /**
+     * @throws SpotifyAuthException
+     */
+    private function handleAuthRequest(array $parameters): array
+    {
+        try {
+            $response = SpotifyClient::post(self::ACCOUNT_URL.'/api/token', [
+                'form_params' => $parameters,
+                'headers' => [
+                    'content-type' => 'application/x-www-form-urlencoded',
+                    'Authorization' => 'Basic '.base64_encode($this->clientId.':'.$this->clientSecret),
+                ],
+            ]);
+        } catch (RequestException $e) {
+            $errorResponse = json_decode($e->getResponse()->getBody()->getContents());
+            $status = $e->getCode();
+            $message = $errorResponse->error;
+
+            throw new SpotifyAuthException($message, $status, $errorResponse);
+        }
+
+        $body = json_decode((string) $response->getBody());
+
+        Cache::remember('spotify_access_token', $body->expires_in, function () use ($body) {
+            return $body->access_token;
+        });
+        Cache::put('spotify_refresh_token', $body->refresh_token);
+
+        return ['access_token' => $body->access_token, 'expires_in' => $body->expires_in];
     }
 }

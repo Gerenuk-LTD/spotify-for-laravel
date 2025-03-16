@@ -26,7 +26,7 @@ class SpotifyRequest
     {
         $this->endpoint = $endpoint;
         $this->acceptedParams = $acceptedParams;
-        $this->accessToken = $accessToken != null ?? Cache::get('spotify_access_token');
+        $this->accessToken = $accessToken ?? Cache::get('spotify_access_token');
         $this->apiUrl = config('spotify-for-laravel.api_url');
     }
 
