@@ -5,7 +5,6 @@ namespace Gerenuk\SpotifyForLaravel;
 use Gerenuk\SpotifyForLaravel\Exceptions\SpotifyAuthException;
 use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
 
 class SpotifyAuth
@@ -41,7 +40,7 @@ class SpotifyAuth
 
         $redirectUrl = self::ACCOUNT_URL.'/authorize?'.http_build_query($parameters);
         header('Location: '.$redirectUrl);
-        die();
+        exit();
     }
 
     /**
@@ -102,8 +101,6 @@ class SpotifyAuth
      *
      * @link https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens
      *
-     * @param  string|null  $refreshToken
-     * @return array
      * @throws SpotifyAuthException
      */
     public function refreshAccessToken(?string $refreshToken = null): array
@@ -153,8 +150,6 @@ class SpotifyAuth
     }
 
     /**
-     * @param  array  $parameters
-     * @return array
      * @throws SpotifyAuthException
      */
     private function handleAuthRequest(array $parameters): array
