@@ -381,6 +381,77 @@ class Spotify
     }
 
     /**
+     * Get information about the user’s current playback state, including track or episode, progress, and active device.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/get-information-about-the-users-current-playback
+     */
+    public function playbackState(): SpotifyRequest
+    {
+        $endpoint = '/me/player';
+
+        $acceptedParams = [
+            'market' => $this->defaultConfig['market'],
+            'additional_types' => null,
+        ];
+
+        return new SpotifyRequest($endpoint, $acceptedParams);
+    }
+
+    /**
+     * Get information about a user’s available Spotify Connect devices. Some device models are not supported and will not be listed in the API response.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/get-a-users-available-devices
+     */
+    public function availableDevices(): SpotifyRequest
+    {
+        $endpoint = '/me/player/devices';
+
+        return new SpotifyRequest($endpoint);
+    }
+
+    /**
+     * Get the object currently being played on the user's Spotify account.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/get-the-users-currently-playing-track
+     */
+    public function currentlyPlayingTrack(): SpotifyRequest
+    {
+        $endpoint = '/me/player/currently-playing';
+
+        $acceptedParams = [
+            'market' => $this->defaultConfig['market'],
+            'additional_types' => null,
+        ];
+
+        return new SpotifyRequest($endpoint, $acceptedParams);
+    }
+
+    public function recentlyPlayedTracks(): SpotifyRequest
+    {
+        $endpoint = '/me/player/recently-played';
+
+        $acceptedParams = [
+            'limit' => null,
+            'after' => null,
+            'before' => null,
+        ];
+
+        return new SpotifyRequest($endpoint, $acceptedParams);
+    }
+
+    /**
+     * Get the list of objects that make up the user's queue.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/get-queue
+     */
+    public function currentUsersQueue(): SpotifyRequest
+    {
+        $endpoint = '/me/player/queue';
+
+        return new SpotifyRequest($endpoint);
+    }
+
+    /**
      * Get a playlist owned by a Spotify user.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/get-playlist
