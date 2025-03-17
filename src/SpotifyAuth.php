@@ -101,7 +101,7 @@ class SpotifyAuth
      */
     public function getAccessToken(): string
     {
-        if (!Cache::has('spotify_access_token')) {
+        if (! Cache::has('spotify_access_token')) {
             $this->refreshAccessToken();
         }
 
