@@ -19,7 +19,19 @@ Spotify for Laravel is an easy-to-use [Spotify Web API](https://developer.spotif
 4. [Usage](#usage)
 5. [Optional Parameters](#optional-parameters)
 6. [Spotify API Reference](#spotify-api-reference)
+   - [Albums](#albums)
    - [Artists](#artists)
+   - [Audiobooks](#audiobooks)
+   - [Categories](#categories)
+   - [Chapters](#chapters)
+   - [Episodes](#episodes)
+   - [Markets](#markets)
+   - [Player](#player)
+   - [Playlists](#playlists)
+   - [Search](#search)
+   - [Shows](#shows)
+   - [Tracks](#tracks)
+   - [Users](#users)
 7. [Testing](#testing)
 8. [Changelog](#changelog)
 9. [Contributing](#contributing)
@@ -210,6 +222,25 @@ Spotify::albums('album_id, album_id_2, album_id_3')->get();
 Spotify::albums(['album_id', 'album_id_2', 'album_id_3'])->get();
 ```
 
+### Albums
+
+```php
+// Get an album by ID.
+Spotify::album('album_id')->get();
+
+// Get several albums by IDs. Provide a string or array of IDs.
+Spotify::albums('album_id, album_id_2, album_id_3')->get();
+
+// Get the tracks of an album by ID.
+Spotify::albumTracks('album_id')->get();
+
+// Get the currently authenticated users saved albums.
+Spotify::usersSavedAlbums()->get();
+
+// Get new album releases shown in the Spotify browse tab.
+Spotify::newReleases()->get();
+```
+
 ### Artists
 
 ```php
@@ -226,7 +257,23 @@ Spotify::artistAlbums('artist_id')->get();
 Spotify::artistTopTracks('artist_id')->get();
 ```
 
-### Browse
+### Audiobooks
+
+```php
+// Get an audiobook by ID.
+Spotify::audiobook('audiobook_id')->get();
+
+// Get several audiobooks by IDs. Provide a string or array of IDs.
+Spotify::audiobooks('audiobook_id, audiobook_id_2, audiobook_id_3')->get();
+
+// Get chapters of an audiobook by ID.
+Spotify::audiobookChapters('audiobook_id')->get();
+
+// Get the currently authenticated users saved audiobooks.
+Spotify::usersSavedAudiobooks()->get();
+```
+
+### Categories
 
 ```php
 // Get a category by ID.
@@ -234,9 +281,16 @@ Spotify::category('category_id')->get();
 
 // Get a list of categories.
 Spotify::categories()->get();
+```
 
-// Get a list of new releases.
-Spotify::newReleases()->get();
+### Chapters
+
+```php
+// Get a chapter by ID.
+Spotify::chapter('chapter_id')->get();
+
+// Get several chapters by IDs. Provide a string or array of IDs.
+Spotify::chapters('chapter_id, chapter_id_2, chapter_id_3')->get();
 ```
 
 ### Episodes
@@ -247,6 +301,35 @@ Spotify::episode('episode_id')->get();
 
 // Get several episodes by IDs. Provide a string or array of IDs.
 Spotify::episodes('episode_id, episode_id_2, episode_id_3')->get();
+
+// Get the currently authenticated users saved episodes.
+Spotify::usersSavedEpisodes()->get();
+```
+
+### Markets
+
+```php
+// Get available markets.
+Spotify::markets()->get();
+```
+
+### Player
+
+```php
+// Get the currently authenticated users playback state.
+Spotify::playbackState()->get();
+
+// Get the currently authenticated users available devices.
+Spotify::availableDevices()->get();
+
+// Get the currently authenticated users currently playing track.
+Spotify::currentlyPlayingTrack()->get();
+
+// Get the currently authenticated users recently played tracks.
+Spotify::recentlyPlayedTracks()->get();
+
+// Get the currently authenticated users track queue.
+Spotify::currentUsersQueue()->get();
 ```
 
 ### Playlists
@@ -258,6 +341,12 @@ Spotify::playlist('playlist_id')->get();
 // Get a playlist's tracks by ID.
 Spotify::playlistTracks('playlist_id')->get();
 
+// Get the currently authenticated users playlists.
+Spotify::currentUsersPlaylists()->get();
+
+// Get a users playlists by  user ID.
+Spotify::usersPlaylists('user_id')->get();
+
 // Get a playlist's cover image by ID.
 Spotify::playlistCoverImage('playlist_id')->get();
 ```
@@ -265,8 +354,8 @@ Spotify::playlistCoverImage('playlist_id')->get();
 ### Search
 
 ```php
-// Search items by query. Provide a string or array to the second parameter.
-Spotify::searchItems('query', 'album, artist, playlist, track')->get();
+// Search items by query. Provide a string or array to the first parameter.
+Spotify::searchItems('album, artist, playlist, track, show, episode, audiobook', 'query')->get();
 
 // Search albums by query.
 Spotify::searchAlbums('query')->get();
@@ -274,17 +363,20 @@ Spotify::searchAlbums('query')->get();
 // Search artists by query.
 Spotify::searchArtists('query')->get();
 
-// Search episodes by query.
-Spotify::searchEpisodes('query')->get();
-
 // Search playlists by query.
 Spotify::searchPlaylists('query')->get();
+
+// Search tracks by query.
+Spotify::searchTracks('query')->get();
 
 // Search shows by query.
 Spotify::searchShows('query')->get();
 
-// Search tracks by query.
-Spotify::searchTracks('query')->get();
+// Search episodes by query.
+Spotify::searchEpisodes('query')->get();
+
+// Search audiobooks by query.
+Spotify::searchAudiobooks('query')->get();
 ```
 
 ### Shows
@@ -298,6 +390,9 @@ Spotify::shows('show_id, show_id_2, show_id_3')->get();
 
 // Get the episodes of a show by ID.
 Spotify::showEpisodes('show_id')->get();
+
+// Get the currently authenticated users saved shows.
+Spotify::currentUsersSavedShows()->get();
 ```
 
 ### Tracks
@@ -308,16 +403,25 @@ Spotify::track('track_id')->get();
 
 // Get several tracks by IDs. Provide a string or array of IDs.
 Spotify::tracks('track_id, track_id_2, track_id_3')->get();
+
+// Get the currently authenticated users saved tracks.
+Spotify::currentUsersSavedTracks()->get();
 ```
 
-### User's Profile
+### Users
 
 ```php
+// Get the currently authenticated users profile.
+Spotify::currentUsersProfile()->get();
+
+// Get the currently authenticated users top items.
+Spotify::currentUsersTopItems('item_type')->get();
+
 // Get a user's profile
 Spotify::user('user_id')->get();
 
-// Get a list of a user's playlists
-Spotify::userPlaylists('user_id')->get();
+// Get the currently authenticated users followed artists.
+Spotify::followedArtists()->get();
 ```
 
 ## Testing
