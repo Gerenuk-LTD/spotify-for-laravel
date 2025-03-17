@@ -17,12 +17,15 @@ Spotify for Laravel is an easy-to-use [Spotify Web API](https://developer.spotif
 2. [Version Compatability](#version-compatability)
 3. [Installation](#installation)
 4. [Usage](#usage)
-5. [Testing](#testing)
-6. [Changelog](#changelog)
-7. [Contributing](#contributing)
-8. [Security Vulnerabilities](#security-vulnerabilities)
-9. [Credits](#credits)
-10. [License](#license)
+5. [Optional Parameters](#optional-parameters)
+6. [Spotify API Reference](#spotify-api-reference)
+   - [Artists](#artists)
+7. [Testing](#testing)
+8. [Changelog](#changelog)
+9. [Contributing](#contributing)
+10. [Security Vulnerabilities](#security-vulnerabilities)
+11. [Credits](#credits)
+12. [License](#license)
 
 ## Version Compatability
 
@@ -108,9 +111,213 @@ SPOTIFY_CLIENT_SECRET=********************************
 
 ## Usage
 
+Before using the methods in this package you will need to generate an `access_token`.
+
 ```php
-$spotify = new Gerenuk\Spotify();
-echo $spotify->echoPhrase('Hello, Gerenuk!');
+using Gerenuk\SpotifyForLaravel\Facades\SpotifyAuth;
+
+// Using the 'Authorization Code Flow'.
+SpotifyAuth::authorize();
+SpotifyAuth::generateAccessToken('code'); // redirect_uri?code=
+
+// Using the 'Credentials Flow'.
+SpotifyAuth::generateCredentialsToken();
+```
+
+Once the `access_token` has expired you will need to generate a new one, this can be done by:
+
+```php
+using Gerenuk\SpotifyForLaravel\Facades\SpotifyAuth;
+
+// Using the 'Authorization Code Flow'.
+SpotifyAuth::refreshAccessToken();
+
+// Using the 'Credentials Flow'.
+SpotifyAuth::generateCredentialsToken();
+```
+
+Below is a simple example of searching for tracks with the name `Closed on Sunday`:
+
+```php
+use Gerenuk\SpotifyForLaravel\Facades\Spotify;
+
+Spotify::searchTracks('Closed on Sunday')->get();
+```
+
+**Important:** The `get()` method acts as the final method of the fluent interface. Make sure to always call it last in the method chain to execute a request to the Spotify Web API.
+
+## Optional Parameters
+You may pass optional parameters to your requests using the fluent interface provided by this package. A common use case is to set a `limit` and `offset` to your request.
+
+```php
+Spotify::searchTracks('Closed on Sunday')->limit(50)->offset(50)->get();
+```
+
+### Parameter Methods API Reference
+Consult the [Spotify Web API Reference Documentation](https://developer.spotify.com/documentation/web-api/reference/) to check which parameters are available to what endpoint.
+
+```php
+// Limit the response to a particular geographical market.
+Spotify::artistAlbums('artist_id')->country('US')->get();
+
+// Filter the query using the provided string.
+Spotify::playlist('playlist_id')->fields('description, uri')->get();
+
+// Include any relevant content that is hosted externally.
+Spotify::searchTracks('query')->includeExternal('audio')->get();
+
+// Filter the response using the provided string.
+Spotify::artistAlbums('artist_id')->includeGroups('album, single, appears_on, compilation')->get();
+
+// Set the number of track objects to be returned.
+Spotify::searchTracks('query')->limit(10)->get();
+
+// Set the index of the first track to be returned.
+Spotify::searchTracks('query')->offset(10)->get();
+
+// Limit the response to a particular geographical market.
+Spotify::searchAlbums('query')->market('US')->get();
+
+// Limit the response to a particular language.
+Spotify::category('category_id')->locale('en_US')->get();
+```
+
+### Resetting Defaults
+You may want to reset the default setting of `country`, `locale` or `market` for a given request. You may do so by calling the corresponding parameter method with an empty argument.
+
+```php
+// This will reset the default market to nothing.
+Spotify::searchTracks('query')->market()->get();
+```
+
+### Response Key
+Some API responses are wrapped in a top level object like `artists` or `tracks`. If you want to directly access the content of a given top level object, you may do so by passing its key as a string to the `get()` method.
+
+```php
+// This will return the content of the tracks object.
+Spotify::searchTracks('query')->get('tracks');
+```
+
+## Spotify API Reference
+
+**Note:** Any parameter that accepts multiple values can either receive a string with comma-separated values or an array of values.
+
+```php
+// Pass a string with comma-separated values
+Spotify::albums('album_id, album_id_2, album_id_3')->get();
+
+// Or pass an array of values
+Spotify::albums(['album_id', 'album_id_2', 'album_id_3'])->get();
+```
+
+### Artists
+
+```php
+// Get an artist by ID.
+Spotify::artist('artist_id')->get();
+
+// Get several artists by IDs. Provide a string or array of IDs.
+Spotify::artists('artist_id, artist_id_2, artist_id_3')->get();
+
+// Get albums of an artist by ID.
+Spotify::artistAlbums('artist_id')->get();
+
+// Get the artist's top tracks by ID.
+Spotify::artistTopTracks('artist_id')->get();
+```
+
+### Browse
+
+```php
+// Get a category by ID.
+Spotify::category('category_id')->get();
+
+// Get a list of categories.
+Spotify::categories()->get();
+
+// Get a list of new releases.
+Spotify::newReleases()->get();
+```
+
+### Episodes
+
+```php
+// Get an episode by ID.
+Spotify::episode('episode_id')->get();
+
+// Get several episodes by IDs. Provide a string or array of IDs.
+Spotify::episodes('episode_id, episode_id_2, episode_id_3')->get();
+```
+
+### Playlists
+
+```php
+// Get a playlist by ID.
+Spotify::playlist('playlist_id')->get();
+
+// Get a playlist's tracks by ID.
+Spotify::playlistTracks('playlist_id')->get();
+
+// Get a playlist's cover image by ID.
+Spotify::playlistCoverImage('playlist_id')->get();
+```
+
+### Search
+
+```php
+// Search items by query. Provide a string or array to the second parameter.
+Spotify::searchItems('query', 'album, artist, playlist, track')->get();
+
+// Search albums by query.
+Spotify::searchAlbums('query')->get();
+
+// Search artists by query.
+Spotify::searchArtists('query')->get();
+
+// Search episodes by query.
+Spotify::searchEpisodes('query')->get();
+
+// Search playlists by query.
+Spotify::searchPlaylists('query')->get();
+
+// Search shows by query.
+Spotify::searchShows('query')->get();
+
+// Search tracks by query.
+Spotify::searchTracks('query')->get();
+```
+
+### Shows
+
+```php
+// Get a show by ID.
+Spotify::show('show_id')->get();
+
+// Get several shows by IDs. Provide a string or array of IDs.
+Spotify::shows('show_id, show_id_2, show_id_3')->get();
+
+// Get the episodes of a show by ID.
+Spotify::showEpisodes('show_id')->get();
+```
+
+### Tracks
+
+```php
+// Get a track by ID.
+Spotify::track('track_id')->get();
+
+// Get several tracks by IDs. Provide a string or array of IDs.
+Spotify::tracks('track_id, track_id_2, track_id_3')->get();
+```
+
+### User's Profile
+
+```php
+// Get a user's profile
+Spotify::user('user_id')->get();
+
+// Get a list of a user's playlists
+Spotify::userPlaylists('user_id')->get();
 ```
 
 ## Testing
