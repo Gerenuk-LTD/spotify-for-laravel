@@ -536,13 +536,14 @@ class Spotify
     }
 
     /**
-     * Get Spotify Catalog information about artists, albums, tracks or playlists that match a keyword string.
+     * Get Spotify catalog information about albums, artists, playlists, tracks, shows, episodes or audiobooks that match a keyword string.
+     * Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
      *
      * @link https://developer.spotify.com/documentation/web-api/reference/search
      *
      * @throws ValidatorException
      */
-    public function searchItems(string $query, array|string $type): SpotifyRequest
+    public function searchItems(array|string $type, string $query): SpotifyRequest
     {
         $endpoint = '/search';
 
@@ -556,6 +557,91 @@ class Spotify
         ];
 
         return new SpotifyRequest($endpoint, $acceptedParams);
+    }
+
+    /**
+     * Get Spotify catalog information about albums that match a keyword string.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/search
+     *
+     * @throws ValidatorException
+     */
+    public function searchAlbums(string $query): SpotifyRequest
+    {
+        return $this->searchItems('albums', $query);
+    }
+
+    /**
+     * Get Spotify catalog information about artists that match a keyword string.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/search
+     *
+     * @throws ValidatorException
+     */
+    public function searchArtists(string $query): SpotifyRequest
+    {
+        return $this->searchItems('artists', $query);
+    }
+
+    /**
+     * Get Spotify catalog information about playlists that match a keyword string.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/search
+     *
+     * @throws ValidatorException
+     */
+    public function searchPlaylists(string $query): SpotifyRequest
+    {
+        return $this->searchItems('playlists', $query);
+    }
+
+    /**
+     * Get Spotify catalog information about tracks that match a keyword string.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/search
+     *
+     * @throws ValidatorException
+     */
+    public function searchTracks(string $query): SpotifyRequest
+    {
+        return $this->searchItems('tracks', $query);
+    }
+
+    /**
+     * Get Spotify catalog information about shows that match a keyword string.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/search
+     *
+     * @throws ValidatorException
+     */
+    public function searchShows(string $query): SpotifyRequest
+    {
+        return $this->searchItems('shows', $query);
+    }
+
+    /**
+     * Get Spotify catalog information about episodes that match a keyword string.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/search
+     *
+     * @throws ValidatorException
+     */
+    public function searchEpisodes(string $query): SpotifyRequest
+    {
+        return $this->searchItems('episodes', $query);
+    }
+
+    /**
+     * Get Spotify catalog information about audiobooks that match a keyword string.
+     * Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/reference/search
+     *
+     * @throws ValidatorException
+     */
+    public function searchAudiobooks(string $query): SpotifyRequest
+    {
+        return $this->searchItems('audiobooks', $query);
     }
 
     /**
