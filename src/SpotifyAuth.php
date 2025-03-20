@@ -5,7 +5,6 @@ namespace Gerenuk\SpotifyForLaravel;
 use Gerenuk\SpotifyForLaravel\Exceptions\SpotifyAuthException;
 use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class SpotifyAuth

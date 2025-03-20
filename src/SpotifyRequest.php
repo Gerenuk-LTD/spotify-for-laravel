@@ -9,7 +9,7 @@ use Gerenuk\SpotifyForLaravel\Helpers\Validator;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 
 class SpotifyRequest
 {
@@ -27,7 +27,7 @@ class SpotifyRequest
     {
         $this->endpoint = $endpoint;
         $this->acceptedParams = $acceptedParams;
-        $this->accessToken = $accessToken ?? Cache::get('spotify_access_token');
+        $this->accessToken = $accessToken ?? Session::get('spotify_access_token');
         $this->apiUrl = config('spotify-for-laravel.api_url');
     }
 
