@@ -6,6 +6,7 @@ use Gerenuk\SpotifyForLaravel\Exceptions\SpotifyAuthException;
 use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 
 class SpotifyAuth
 {
@@ -84,11 +85,11 @@ class SpotifyAuth
 
         $body = json_decode((string) $response->getBody());
 
-        Cache::put('spotify_access_token', $body->access_token, $body->expires_in);
+        Session::put('spotify_access_token', $body->access_token);
 
         // When refreshing an access token, a refresh token won't be returned.
         if (isset($body->refresh_token)) {
-            Cache::put('spotify_refresh_token', $body->refresh_token);
+            Session::put('spotify_refresh_token', $body->refresh_token);
         }
 
         return ['access_token' => $body->access_token, 'expires_in' => $body->expires_in];
@@ -101,11 +102,11 @@ class SpotifyAuth
      */
     public function getAccessToken(): string
     {
-        if (! Cache::has('spotify_access_token')) {
+        if (! Session::has('spotify_access_token')) {
             $this->refreshAccessToken();
         }
 
-        return Cache::get('spotify_access_token');
+        return Session::get('spotify_access_token');
     }
 
     /**
@@ -119,7 +120,7 @@ class SpotifyAuth
     {
         $parameters = [
             'grant_type' => 'refresh_token',
-            'refresh_token' => $refreshToken ?? Cache::get('spotify_refresh_token'),
+            'refresh_token' => $refreshToken ?? Session::get('spotify_refresh_token'),
         ];
 
         return $this->handleAuthRequest($parameters);
@@ -128,9 +129,9 @@ class SpotifyAuth
     /**
      * Set an access token to be stored in the cache.
      */
-    public function setAccessToken(string $accessToken, ?int $ttl = null): void
+    public function setAccessToken(string $accessToken): void
     {
-        Cache::put('spotify_access_token', $accessToken, $ttl);
+        Session::put('spotify_access_token', $accessToken);
     }
 
     /**
@@ -138,7 +139,7 @@ class SpotifyAuth
      */
     public function getRefreshToken(): ?string
     {
-        return Cache::get('spotify_refresh_token');
+        return Session::get('spotify_refresh_token');
     }
 
     /**
@@ -146,7 +147,7 @@ class SpotifyAuth
      */
     public function setRefreshToken(string $refreshToken): void
     {
-        Cache::put('spotify_refresh_token', $refreshToken);
+        Session::put('spotify_refresh_token', $refreshToken);
     }
 
     /**
@@ -179,6 +180,6 @@ class SpotifyAuth
 
         $body = json_decode((string) $response->getBody());
 
-        Cache::put('spotify_access_token', $body->access_token, $body->expires_in);
+        Session::put('spotify_access_token', $body->access_token);
     }
 }
