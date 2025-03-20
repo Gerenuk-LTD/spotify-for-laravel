@@ -2,6 +2,15 @@
 
 All notable changes to `spotify-for-laravel` will be documented in this file.
 
+## v2.1.0 - 2025-03-20
+
+### What's Changed
+
+* docs: readme added all methods by @KieranLProctor in https://github.com/Gerenuk-LTD/spotify-for-laravel/pull/9
+* Dev by @KieranLProctor in https://github.com/Gerenuk-LTD/spotify-for-laravel/pull/10
+
+**Full Changelog**: https://github.com/Gerenuk-LTD/spotify-for-laravel/compare/v2.0.0...v2.1.0
+
 ## v2.0.0 - 2025-03-17
 
 ### What's Changed
