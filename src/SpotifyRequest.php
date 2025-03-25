@@ -228,6 +228,23 @@ class SpotifyRequest
     }
 
     /**
+     * Set the ids to check if provided.
+     *
+     * @return $this
+     *
+     * @throws ValidatorException
+     */
+    public function contains(array|string $ids): self
+    {
+        $this->acceptedParams = ['ids' => Validator::validateArgument('ids', $ids)];
+        $this->endpoint = $this->endpoint . "/contains";
+
+        $this->setRequestedParam('contains', $ids);
+
+        return $this;
+    }
+
+    /**
      * Add the requested parameters to an array.
      *
      *
@@ -241,7 +258,7 @@ class SpotifyRequest
     }
 
     /**
-     * Execute the request. This is the final method and has to be called at the end of the method chain.
+     * Execute the request. This is the final method for getting data and has to be called at the end of the method chain.
      *
      * @throws Exceptions\SpotifyApiException
      * @throws GuzzleException
@@ -257,6 +274,19 @@ class SpotifyRequest
         }
 
         return $response;
+    }
+
+    /**
+     * Execute the request. This is the final method for checking data and has to be called at the end of the method chain.
+     *
+     * @throws Exceptions\SpotifyApiException
+     * @throws GuzzleException
+     */
+    public function check(): array
+    {
+        $finalParams =  $this->createFinalParams(collect($this->acceptedParams), collect($this->requestedParams));
+
+        return $this->send($this->endpoint, $finalParams);
     }
 
     /**
