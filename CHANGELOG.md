@@ -2,6 +2,14 @@
 
 All notable changes to `spotify-for-laravel` will be documented in this file.
 
+## v2.2.0 - 2025-03-25
+
+### What's Changed
+
+* Adds in check() method by @KieranLProctor in https://github.com/Gerenuk-LTD/spotify-for-laravel/pull/11
+
+**Full Changelog**: https://github.com/Gerenuk-LTD/spotify-for-laravel/compare/v2.1.0...v2.2.0
+
 ## v2.1.0 - 2025-03-20
 
 ### What's Changed
