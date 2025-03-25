@@ -237,7 +237,7 @@ class SpotifyRequest
     public function contains(array|string $ids): self
     {
         $this->acceptedParams = ['ids' => Validator::validateArgument('ids', $ids)];
-        $this->endpoint = $this->endpoint . "/contains";
+        $this->endpoint = $this->endpoint.'/contains';
 
         $this->setRequestedParam('contains', $ids);
 
@@ -284,7 +284,7 @@ class SpotifyRequest
      */
     public function check(): array
     {
-        $finalParams =  $this->createFinalParams(collect($this->acceptedParams), collect($this->requestedParams));
+        $finalParams = $this->createFinalParams(collect($this->acceptedParams), collect($this->requestedParams));
 
         return $this->send($this->endpoint, $finalParams);
     }
