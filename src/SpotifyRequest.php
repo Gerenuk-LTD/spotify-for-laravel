@@ -12,12 +12,9 @@ use Illuminate\Support\Facades\Session;
 
 class SpotifyRequest
 {
-    private string $endpoint;
-
-    private array $acceptedParams;
-
     public array $requestedParams = [];
-
+    private string $endpoint;
+    private array $acceptedParams;
     private string $accessToken;
 
     private string $apiUrl;
@@ -34,6 +31,70 @@ class SpotifyRequest
     }
 
     /**
+     * Execute the request. This is the final method for getting data and has to be called at the end of the method chain.
+     *
+     * @throws Exceptions\SpotifyApiException
+     * @throws GuzzleException
+     */
+    public function get(?string $responseArrayKey = null): array
+    {
+        // If requestedParams is empty just set an empty array rather than do the intersect.
+        $finalParams = empty($this->requestedParams) ? [] : $this->createFinalParams(collect($this->acceptedParams),
+            collect($this->requestedParams));
+        $response = $this->send($this->method, $this->endpoint, $finalParams);
+
+        if ($responseArrayKey) {
+            return $response[$responseArrayKey];
+        }
+
+        return $response;
+    }
+
+    /**
+     * This merges the requested and accepted parameters and outputs the final parameters ready for the API call.
+     */
+    private function createFinalParams(Collection $acceptedParams, Collection $requestedParams): array
+    {
+        $intersectedRequestedParams = $requestedParams->intersectByKeys($acceptedParams);
+
+        $mergedParams = $acceptedParams->merge($intersectedRequestedParams);
+
+        $validParams = $mergedParams->filter(function ($value) {
+            return $value !== null;
+        });
+
+        return $validParams->toArray();
+    }
+
+    /**
+     * Make the API request.
+     *
+     * @throws SpotifyApiException|GuzzleException
+     */
+    private function send(string $method, string $endpoint, array $params = []): array
+    {
+        try {
+            $client = new \Gerenuk\SpotifyForLaravel\SpotifyClient;
+            $response = $client->request($method, $this->apiUrl.$endpoint.'?'.http_build_query($params), [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accepts' => 'application/json',
+                    'Authorization' => 'Bearer '.$this->accessToken,
+                ],
+            ]);
+        } catch (RequestException $e) {
+            $errorResponse = $e->getResponse();
+            $status = $errorResponse->getStatusCode();
+
+            $message = $errorResponse->getReasonPhrase();
+
+            throw new SpotifyApiException($message, $status, $errorResponse);
+        }
+
+        return json_decode((string) $response->getBody(), true);
+    }
+
+    /**
      * Set the country if provided.
      *
      * @return $this
@@ -45,6 +106,19 @@ class SpotifyRequest
         $this->setRequestedParam('country', $country);
 
         return $this;
+    }
+
+    /**
+     * Add the requested parameters to an array.
+     *
+     *
+     * @throws Exceptions\ValidatorException
+     */
+    private function setRequestedParam(string $requestedParam, int|string|null $value): void
+    {
+        Validator::validateRequestedParam($requestedParam, $this->acceptedParams);
+
+        $this->requestedParams[$requestedParam] = $value;
     }
 
     /**
@@ -272,44 +346,15 @@ class SpotifyRequest
      */
     public function remove(array|string $ids): self
     {
-        $this->acceptedParams = ['ids' => Validator::validateArgument('ids', $ids)];
+        $this->acceptedParams = [
+            'ids' => Validator::validateArgument('ids', $ids),
+            'market' => null
+        ];
         $this->method = 'DELETE';
 
         $this->setRequestedParam('ids', $ids);
 
         return $this;
-    }
-
-    /**
-     * Add the requested parameters to an array.
-     *
-     *
-     * @throws Exceptions\ValidatorException
-     */
-    private function setRequestedParam(string $requestedParam, int|string|null $value): void
-    {
-        Validator::validateRequestedParam($requestedParam, $this->acceptedParams);
-
-        $this->requestedParams[$requestedParam] = $value;
-    }
-
-    /**
-     * Execute the request. This is the final method for getting data and has to be called at the end of the method chain.
-     *
-     * @throws Exceptions\SpotifyApiException
-     * @throws GuzzleException
-     */
-    public function get(?string $responseArrayKey = null): array
-    {
-        // If requestedParams is empty just set an empty array rather than do the intersect.
-        $finalParams = empty($this->requestedParams) ? [] : $this->createFinalParams(collect($this->acceptedParams), collect($this->requestedParams));
-        $response = $this->send($this->method, $this->endpoint, $finalParams);
-
-        if ($responseArrayKey) {
-            return $response[$responseArrayKey];
-        }
-
-        return $response;
     }
 
     /**
@@ -334,49 +379,5 @@ class SpotifyRequest
         $finalParams = $this->createFinalParams(collect($this->acceptedParams), collect($this->requestedParams));
 
         return $this->send($this->method, $this->endpoint, $finalParams);
-    }
-
-    /**
-     * This merges the requested and accepted parameters and outputs the final parameters ready for the API call.
-     */
-    private function createFinalParams(Collection $acceptedParams, Collection $requestedParams): array
-    {
-        $intersectedRequestedParams = $requestedParams->intersectByKeys($acceptedParams);
-
-        $mergedParams = $acceptedParams->merge($intersectedRequestedParams);
-
-        $validParams = $mergedParams->filter(function ($value) {
-            return $value !== null;
-        });
-
-        return $validParams->toArray();
-    }
-
-    /**
-     * Make the API request.
-     *
-     * @throws SpotifyApiException|GuzzleException
-     */
-    private function send(string $method, string $endpoint, array $params = []): array
-    {
-        try {
-            $client = new \Gerenuk\SpotifyForLaravel\SpotifyClient;
-            $response = $client->request($method, $this->apiUrl.$endpoint.'?'.http_build_query($params), [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accepts' => 'application/json',
-                    'Authorization' => 'Bearer '.$this->accessToken,
-                ],
-            ]);
-        } catch (RequestException $e) {
-            $errorResponse = $e->getResponse();
-            $status = $errorResponse->getStatusCode();
-
-            $message = $errorResponse->getReasonPhrase();
-
-            throw new SpotifyApiException($message, $status, $errorResponse);
-        }
-
-        return json_decode((string) $response->getBody(), true);
     }
 }
