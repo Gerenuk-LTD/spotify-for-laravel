@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Session;
 class SpotifyRequest
 {
     public array $requestedParams = [];
+
     private string $endpoint;
+
     private array $acceptedParams;
+
     private string $accessToken;
 
     private string $apiUrl;
@@ -348,7 +351,7 @@ class SpotifyRequest
     {
         $this->acceptedParams = [
             'ids' => Validator::validateArgument('ids', $ids),
-            'market' => null
+            'market' => null,
         ];
         $this->method = 'DELETE';
 
