@@ -235,10 +235,16 @@ Spotify::albums('album_id, album_id_2, album_id_3')->get();
 Spotify::albumTracks('album_id')->get();
 
 // Get the currently authenticated users saved albums.
-Spotify::usersSavedAlbums()->get();
+Spotify::currentUsersSavedAlbums()->get();
+
+// Save one or more albums to the currently authenticated users' library.
+Spotify::currentUsersSavedAlbums()->add('album_id', 'album_id_2', 'album_id_3')->save();
+
+// Remove one or more albums to the currently authenticated users' library.
+Spotify::currentUsersSavedAlbums()->remove('album_id', 'album_id_2', 'album_id_3')->save();
 
 // Check if one or more albums are saved by the currently authenticated user.
-Spotify::usersSavedAlbums()->contains('album_id', 'album_id_2', 'album_id_3')->check();
+Spotify::currentUsersSavedAlbums()->contains('album_id', 'album_id_2', 'album_id_3')->check();
 
 // Get new album releases shown in the Spotify browse tab.
 Spotify::newReleases()->get();
@@ -273,10 +279,16 @@ Spotify::audiobooks('audiobook_id, audiobook_id_2, audiobook_id_3')->get();
 Spotify::audiobookChapters('audiobook_id')->get();
 
 // Get the currently authenticated users saved audiobooks.
-Spotify::usersSavedAudiobooks()->get();
+Spotify::currentUsersSavedAudiobooks()->get();
+
+// Save one or more audiobooks to the currently authenticated users' library.
+Spotify::currentUsersSavedAudiobooks()->add('audiobook_id, audiobook_id_2, audiobook_id_3')->save();
+
+// Remove one or more audiobooks to the currently authenticated users' library.
+Spotify::currentUsersSavedAudiobooks()->remove('audiobook_id, audiobook_id_2, audiobook_id_3')->save();
 
 // Check if one or more audiobooks are saved by the currently authenticated user.
-Spotify::usersSavedAudiobooks()->contains('audiobook_id, audiobook_id_2, audiobook_id_3')->check();
+Spotify::currentUsersSavedAudiobooks()->contains('audiobook_id, audiobook_id_2, audiobook_id_3')->check();
 ```
 
 ### Categories
@@ -310,6 +322,12 @@ Spotify::episodes('episode_id, episode_id_2, episode_id_3')->get();
 
 // Get the currently authenticated users saved episodes.
 Spotify::currentUsersSavedEpisodes()->get();
+
+// Save one or more episodes to the currently authenticated users' library.
+Spotify::currentUsersSavedEpisodes()->add('episode_id, episode_id_2, episode_id_3')->save();
+
+// Remove one or more episodes to the currently authenticated users' library.
+Spotify::currentUsersSavedEpisodes()->remove('episode_id, episode_id_2, episode_id_3')->save();
 
 // Check if one or more episodes are saved by the currently authenticated user.
 Spotify::currentUsersSavedEpisodes()->contains('episode_id, episode_id_2, episode_id_3')->check();
@@ -403,6 +421,12 @@ Spotify::showEpisodes('show_id')->get();
 // Get the currently authenticated users saved shows.
 Spotify::currentUsersSavedShows()->get();
 
+// Save one or more shows to the currently authenticated users' library.
+Spotify::currentUsersSavedShows()->add('show_id, show_id_2, show_id_3')->save();
+
+// Remove one or more shows to the currently authenticated users' library.
+Spotify::currentUsersSavedShows()->martket('GB')->remove('show_id, show_id_2, show_id_3')->save();
+
 // Check if one or more shows are saved by the currently authenticated user.
 Spotify::currentUsersSavedShows()->contains('show_id, show_id_2, show_id_3')->check();
 ```
@@ -418,6 +442,12 @@ Spotify::tracks('track_id, track_id_2, track_id_3')->get();
 
 // Get the currently authenticated users saved tracks.
 Spotify::currentUsersSavedTracks()->get();
+
+// Save one or more tracks to the currently authenticated users' library.
+Spotify::currentUsersSavedTracks()->add('track_id, track_id_2, track_id_3')->save();
+
+// Remove one or more tracks to the currently authenticated users' library.
+Spotify::currentUsersSavedTracks()->remove('track_id, track_id_2, track_id_3')->save();
 
 // Check if one or more tracks are saved by the currently authenticated user.
 Spotify::currentUsersSavedTracks()->contains('track_id, track_id_2, track_id_3')->check();
