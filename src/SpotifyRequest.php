@@ -4,7 +4,6 @@ namespace Gerenuk\SpotifyForLaravel;
 
 use Gerenuk\SpotifyForLaravel\Exceptions\SpotifyApiException;
 use Gerenuk\SpotifyForLaravel\Exceptions\ValidatorException;
-use Gerenuk\SpotifyForLaravel\Facades\SpotifyClient;
 use Gerenuk\SpotifyForLaravel\Helpers\Validator;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -23,12 +22,15 @@ class SpotifyRequest
 
     private string $apiUrl;
 
+    private string $method;
+
     public function __construct(string $endpoint, array $acceptedParams = [], ?string $accessToken = null)
     {
         $this->endpoint = $endpoint;
         $this->acceptedParams = $acceptedParams;
         $this->accessToken = $accessToken ?? Session::get('spotify_access_token');
         $this->apiUrl = config('spotify-for-laravel.api_url');
+        $this->method = 'GET';
     }
 
     /**
@@ -245,6 +247,40 @@ class SpotifyRequest
     }
 
     /**
+     * Set the ids to add if provided.
+     *
+     * @return $this
+     *
+     * @throws ValidatorException
+     */
+    public function add(array|string $ids): self
+    {
+        $this->acceptedParams = ['ids' => Validator::validateArgument('ids', $ids)];
+        $this->method = 'PUT';
+
+        $this->setRequestedParam('ids', $ids);
+
+        return $this;
+    }
+
+    /**
+     * Set the ids to remove if provided.
+     *
+     * @return $this
+     *
+     * @throws ValidatorException
+     */
+    public function remove(array|string $ids): self
+    {
+        $this->acceptedParams = ['ids' => Validator::validateArgument('ids', $ids)];
+        $this->method = 'DELETE';
+
+        $this->setRequestedParam('ids', $ids);
+
+        return $this;
+    }
+
+    /**
      * Add the requested parameters to an array.
      *
      *
@@ -267,13 +303,24 @@ class SpotifyRequest
     {
         // If requestedParams is empty just set an empty array rather than do the intersect.
         $finalParams = empty($this->requestedParams) ? [] : $this->createFinalParams(collect($this->acceptedParams), collect($this->requestedParams));
-        $response = $this->send($this->endpoint, $finalParams);
+        $response = $this->send($this->method, $this->endpoint, $finalParams);
 
         if ($responseArrayKey) {
             return $response[$responseArrayKey];
         }
 
         return $response;
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws SpotifyApiException
+     */
+    public function save(): array
+    {
+        $finalParams = $this->createFinalParams(collect($this->acceptedParams), collect($this->requestedParams));
+
+        return $this->send($this->method, $this->endpoint, $finalParams);
     }
 
     /**
@@ -286,7 +333,7 @@ class SpotifyRequest
     {
         $finalParams = $this->createFinalParams(collect($this->acceptedParams), collect($this->requestedParams));
 
-        return $this->send($this->endpoint, $finalParams);
+        return $this->send($this->method, $this->endpoint, $finalParams);
     }
 
     /**
@@ -310,10 +357,11 @@ class SpotifyRequest
      *
      * @throws SpotifyApiException|GuzzleException
      */
-    private function send(string $endpoint, array $params = []): array
+    private function send(string $method, string $endpoint, array $params = []): array
     {
         try {
-            $response = SpotifyClient::get($this->apiUrl.$endpoint.'?'.http_build_query($params), [
+            $client = new \Gerenuk\SpotifyForLaravel\SpotifyClient;
+            $response = $client->request($method, $this->apiUrl.$endpoint.'?'.http_build_query($params), [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Accepts' => 'application/json',
