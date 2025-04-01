@@ -62,6 +62,41 @@ class SpotifyAuth
     }
 
     /**
+     * Get an access token using the 'Client Credentials Flow'.
+     *
+     * @link https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow
+     *
+     * @throws SpotifyAuthException
+     */
+    public function requestCredentialsToken(): array
+    {
+        try {
+            $response = SpotifyClient::post(self::ACCOUNT_URL.'/api/token', [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Accepts' => 'application/json',
+                    'Authorization' => 'Basic '.base64_encode($this->clientId.':'.$this->clientSecret),
+                ],
+                'form_params' => [
+                    'grant_type' => 'client_credentials',
+                ],
+            ]);
+        } catch (RequestException $e) {
+            $errorResponse = json_decode($e->getResponse()->getBody()->getContents());
+            $status = $e->getCode();
+            $message = $errorResponse->error;
+
+            throw new SpotifyAuthException($message, $status, $errorResponse);
+        }
+
+        $body = json_decode((string) $response->getBody());
+
+        Session::put('spotify_access_token', $body->access_token);
+
+        return ['access_token' => $body->access_token, 'token_type' => $body->token_type, 'expires_in' => $body->expires_in];
+    }
+
+    /**
      * @throws SpotifyAuthException
      */
     private function handleAuthRequest(array $parameters): array
@@ -91,7 +126,7 @@ class SpotifyAuth
             Session::put('spotify_refresh_token', $body->refresh_token);
         }
 
-        return ['access_token' => $body->access_token, 'expires_in' => $body->expires_in];
+        return ['access_token' => $body->access_token, 'refresh_token' => isset($body->refresh_token) ?? null, 'expires_in' => $body->expires_in];
     }
 
     /**
@@ -147,38 +182,5 @@ class SpotifyAuth
     public function setRefreshToken(string $refreshToken): void
     {
         Session::put('spotify_refresh_token', $refreshToken);
-    }
-
-    /**
-     * Get an access token using the 'Client Credentials Flow'.
-     *
-     * @link https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow
-     *
-     * @throws SpotifyAuthException
-     */
-    private function requestCredentialsToken(): void
-    {
-        try {
-            $response = SpotifyClient::post(self::ACCOUNT_URL.'/api/token', [
-                'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                    'Accepts' => 'application/json',
-                    'Authorization' => 'Basic '.base64_encode($this->clientId.':'.$this->clientSecret),
-                ],
-                'form_params' => [
-                    'grant_type' => 'client_credentials',
-                ],
-            ]);
-        } catch (RequestException $e) {
-            $errorResponse = json_decode($e->getResponse()->getBody()->getContents());
-            $status = $e->getCode();
-            $message = $errorResponse->error;
-
-            throw new SpotifyAuthException($message, $status, $errorResponse);
-        }
-
-        $body = json_decode((string) $response->getBody());
-
-        Session::put('spotify_access_token', $body->access_token);
     }
 }
