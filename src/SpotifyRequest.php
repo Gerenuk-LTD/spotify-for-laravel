@@ -382,7 +382,7 @@ class SpotifyRequest
         $this->acceptedParams = [
             'position' => null,
         ];
-        $this->setRequestedParam('uris', Validator::validateArgument('uris', $uris));
+        $this->setRequestedBodyParam('uris', Validator::validateArgument('uris', $uris));
         $this->method = 'POST';
 
         return $this;
