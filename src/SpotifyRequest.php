@@ -24,6 +24,8 @@ class SpotifyRequest
 
     private string $method;
 
+    public array $bodyParams = [];
+
     public function __construct(string $endpoint, array $acceptedParams = [], ?string $accessToken = null)
     {
         $this->endpoint = $endpoint;
@@ -74,16 +76,17 @@ class SpotifyRequest
      *
      * @throws SpotifyApiException|GuzzleException
      */
-    private function send(string $method, string $endpoint, array $params = []): array
+    private function send(string $method, string $endpoint, array $params = [], array $body = []): array
     {
         try {
-            $client = new \Gerenuk\SpotifyForLaravel\SpotifyClient;
+            $client = new SpotifyClient;
             $response = $client->request($method, $this->apiUrl.$endpoint.'?'.http_build_query($params), [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Accepts' => 'application/json',
                     'Authorization' => 'Bearer '.$this->accessToken,
                 ],
+                'json' => $body,
             ]);
         } catch (RequestException $e) {
             $errorResponse = $e->getResponse();
@@ -114,10 +117,21 @@ class SpotifyRequest
     /**
      * Add the requested parameters to an array.
      *
-     *
      * @throws Exceptions\ValidatorException
      */
     private function setRequestedParam(string $requestedParam, int|string|null $value): void
+    {
+        Validator::validateRequestedParam($requestedParam, $this->acceptedParams);
+
+        $this->requestedParams[$requestedParam] = $value;
+    }
+
+    /**
+     * Add the requested body parameters to an array.
+     *
+     * @throws Exceptions\ValidatorException
+     */
+    private function setRequestedBodyParam(string $requestedParam, int|string|null $value): void
     {
         Validator::validateRequestedParam($requestedParam, $this->acceptedParams);
 
@@ -361,6 +375,38 @@ class SpotifyRequest
     }
 
     /**
+     * @throws ValidatorException
+     */
+    public function addUris(string|array $uris): self
+    {
+        $this->acceptedParams = [
+            'position' => null,
+        ];
+        $this->setRequestedParam('uris', Validator::validateArgument('uris', $uris));
+        $this->method = 'POST';
+
+        return $this;
+    }
+
+    /**
+     * @throws ValidatorException
+     */
+    public function removeUris(string|array $uris): self
+    {
+        // Format the param how spotify needs it. { tracks: [{ uri: uri }]}
+        $validatedUris = Validator::validateArgument('uris', $uris);
+        $tracks = [];
+        foreach (explode(',', $validatedUris) as $uri) {
+            $tracks[] = ['uri' => $uri];
+        }
+
+        $this->setRequestedBodyParam('tracks', json_encode($tracks));
+        $this->method = 'DELETE';
+
+        return $this;
+    }
+
+    /**
      * @throws GuzzleException
      * @throws SpotifyApiException
      */
@@ -368,7 +414,7 @@ class SpotifyRequest
     {
         $finalParams = $this->createFinalParams(collect($this->acceptedParams), collect($this->requestedParams));
 
-        return $this->send($this->method, $this->endpoint, $finalParams);
+        return $this->send($this->method, $this->endpoint, $finalParams, $this->bodyParams);
     }
 
     /**
