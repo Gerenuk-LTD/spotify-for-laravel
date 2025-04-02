@@ -129,13 +129,10 @@ class SpotifyRequest
     /**
      * Add the requested body parameters to an array.
      *
-     * @throws Exceptions\ValidatorException
      */
     private function setRequestedBodyParam(string $requestedParam, int|string|null $value): void
     {
-        Validator::validateRequestedParam($requestedParam, $this->acceptedParams);
-
-        $this->requestedParams[$requestedParam] = $value;
+        $this->bodyParams[$requestedParam] = $value;
     }
 
     /**
