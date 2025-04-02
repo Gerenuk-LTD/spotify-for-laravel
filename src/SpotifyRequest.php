@@ -86,8 +86,7 @@ class SpotifyRequest
             ],
         ];
 
-        if (!empty($body))
-        {
+        if (! empty($body)) {
             $options['json'] = $body;
         }
 
