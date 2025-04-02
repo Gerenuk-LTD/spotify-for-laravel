@@ -2,6 +2,14 @@
 
 All notable changes to `spotify-for-laravel` will be documented in this file.
 
+## v2.3.1 - 2025-04-02
+
+### What's Changed
+
+* fix: wrong method being called to add to body params by @KieranLProctor in https://github.com/Gerenuk-LTD/spotify-for-laravel/pull/15
+
+**Full Changelog**: https://github.com/Gerenuk-LTD/spotify-for-laravel/compare/v2.3.0...v2.3.1
+
 ## v2.3.0 - 2025-04-02
 
 ### What's Changed
