@@ -128,7 +128,6 @@ class SpotifyRequest
 
     /**
      * Add the requested body parameters to an array.
-     *
      */
     private function setRequestedBodyParam(string $requestedParam, int|string|null $value): void
     {
