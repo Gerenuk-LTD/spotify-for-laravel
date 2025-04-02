@@ -78,16 +78,22 @@ class SpotifyRequest
      */
     private function send(string $method, string $endpoint, array $params = [], array $body = []): array
     {
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accepts' => 'application/json',
+                'Authorization' => 'Bearer '.$this->accessToken,
+            ],
+        ];
+
+        if (!empty($body))
+        {
+            $options['json'] = $body;
+        }
+
         try {
             $client = new SpotifyClient;
-            $response = $client->request($method, $this->apiUrl.$endpoint.'?'.http_build_query($params), [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accepts' => 'application/json',
-                    'Authorization' => 'Bearer '.$this->accessToken,
-                ],
-                'json' => $body,
-            ]);
+            $response = $client->request($method, $this->apiUrl.$endpoint.'?'.http_build_query($params), $options);
         } catch (RequestException $e) {
             $errorResponse = $e->getResponse();
             $status = $errorResponse->getStatusCode();
