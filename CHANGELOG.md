@@ -2,6 +2,14 @@
 
 All notable changes to `spotify-for-laravel` will be documented in this file.
 
+## v2.3.3 - 2025-04-02
+
+### What's Changed
+
+* fix: removeUris method @KieranLProctor in https://github.com/Gerenuk-LTD/spotify-for-laravel/pull/17
+
+**Full Changelog**: https://github.com/Gerenuk-LTD/spotify-for-laravel/compare/v2.3.2...v2.3.3
+
 ## v2.3.2 - 2025-04-02
 
 ### What's Changed
