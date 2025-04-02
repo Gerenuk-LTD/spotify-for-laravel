@@ -2,6 +2,16 @@
 
 All notable changes to `spotify-for-laravel` will be documented in this file.
 
+## v2.3.0 - 2025-04-02
+
+### What's Changed
+
+* feat: add and remove methods by @KieranLProctor in https://github.com/Gerenuk-LTD/spotify-for-laravel/pull/12
+* feat: SpotifyAuth tets by @KieranLProctor in https://github.com/Gerenuk-LTD/spotify-for-laravel/pull/13
+* feat: added addUris & removeUris for playlist by @KieranLProctor in https://github.com/Gerenuk-LTD/spotify-for-laravel/pull/14
+
+**Full Changelog**: https://github.com/Gerenuk-LTD/spotify-for-laravel/compare/v2.2.0...v2.3.0
+
 ## v2.2.0 - 2025-03-25
 
 ### What's Changed
