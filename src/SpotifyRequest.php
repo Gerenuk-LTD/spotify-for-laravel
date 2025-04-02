@@ -129,7 +129,7 @@ class SpotifyRequest
     /**
      * Add the requested body parameters to an array.
      */
-    private function setRequestedBodyParam(string $requestedParam, int|string|null $value): void
+    private function setRequestedBodyParam(string $requestedParam, int|string|null|array $value): void
     {
         $this->bodyParams[$requestedParam] = $value;
     }
@@ -378,7 +378,7 @@ class SpotifyRequest
         $this->acceptedParams = [
             'position' => null,
         ];
-        $this->setRequestedBodyParam('uris', Validator::validateArgument('uris', $uris));
+        $this->setRequestedBodyParam('uris', [Validator::validateArgument('uris', $uris)]);
         $this->method = 'POST';
 
         return $this;
@@ -396,7 +396,7 @@ class SpotifyRequest
             $tracks[] = ['uri' => $uri];
         }
 
-        $this->setRequestedBodyParam('tracks', json_encode($tracks));
+        $this->setRequestedBodyParam('tracks', $tracks);
         $this->method = 'DELETE';
 
         return $this;
