@@ -44,6 +44,7 @@ Spotify for Laravel is an easy-to-use [Spotify Web API](https://developer.spotif
 | Plugin | PHP |
 |--------|-----|
 | 1.x    | 8.x |
+| 2.x    | 8.x |
 
 ## Installation
 
