@@ -2,6 +2,14 @@
 
 All notable changes to `spotify-for-laravel` will be documented in this file.
 
+## v2.3.5 - 2025-04-06
+
+### What's Changed
+
+* fix: addUris now works with more than one id by @KieranLProctor in https://github.com/Gerenuk-LTD/spotify-for-laravel/pull/19
+
+**Full Changelog**: https://github.com/Gerenuk-LTD/spotify-for-laravel/compare/v2.3.4...v2.3.5
+
 ## v2.3.4 - 2025-04-02
 
 ### What's Changed
