@@ -383,7 +383,7 @@ class SpotifyRequest
         $this->acceptedParams = [
             'position' => null,
         ];
-        $this->setRequestedBodyParam('uris', [Validator::validateArgument('uris', $uris)]);
+        $this->setRequestedBodyParam('uris', Validator::validateBodyArgument('uris', $uris));
         $this->method = 'POST';
 
         return $this;
@@ -395,9 +395,9 @@ class SpotifyRequest
     public function removeUris(string|array $uris): self
     {
         // Format the param how spotify needs it. { tracks: [{ uri: uri }]}
-        $validatedUris = Validator::validateArgument('uris', $uris);
+        $validatedUris = Validator::validateBodyArgument('uris', $uris);
         $tracks = [];
-        foreach (explode(',', $validatedUris) as $uri) {
+        foreach ($validatedUris as $uri) {
             $tracks[] = ['uri' => $uri];
         }
 

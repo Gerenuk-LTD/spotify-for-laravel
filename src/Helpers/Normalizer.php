@@ -17,4 +17,17 @@ class Normalizer
 
         return $argument;
     }
+
+    /**
+     * Normalize the provided body argument.
+     */
+    public static function normalizeBodyArgument(array|string $argument): array
+    {
+        if (is_string($argument)) {
+            $argument = str_replace(' ', '', $argument);
+            $argument = explode(',', $argument);
+        }
+
+        return $argument;
+    }
 }
