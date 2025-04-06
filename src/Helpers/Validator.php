@@ -21,6 +21,20 @@ class Validator
     }
 
     /**
+     * Validate the provided body argument. Throw an error if the argument is not valid.
+     *
+     * @throws ValidatorException
+     */
+    public static function validateBodyArgument(string $key, $argument): array
+    {
+        if (self::argumentIsValid($argument)) {
+            return Normalizer::normalizeBodyArgument($argument);
+        } else {
+            throw new ValidatorException("Please provide a string with comma-separated values or an array as the argument to the [{$key}] parameter.");
+        }
+    }
+
+    /**
      * Validate the requested parameter. Throw an error if the parameter is not accepted.
      *
      * @throws ValidatorException
